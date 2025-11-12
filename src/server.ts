@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import toml from '@iarna/toml';
 import fs from 'fs';
 import path from 'path';
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/userRoutes';
 
 const app = express();
 app.use(bodyParser.json());
