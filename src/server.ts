@@ -8,6 +8,7 @@ import fs from 'fs';
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/api/users', userRoutes);
 app.use(express.static(path.join(process.cwd(), 'public')));
 
 let PORT = 8080;
