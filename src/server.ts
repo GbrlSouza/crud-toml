@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 app.use(express.static(path.join(process.cwd(), 'public')));
 
-let PORT = 8080;
+let PORT = 3030;
 
 try {
   const configPath = path.join(process.cwd(), 'config.toml');
@@ -20,10 +20,10 @@ try {
     const raw = fs.readFileSync(configPath, 'utf-8');
     const config = toml.parse(raw) as any;
 
-    PORT = config?.server?.port || 8080;
+    PORT = config?.server?.port || 3030;
 
     console.log(`🧩 TOON carregado: Porta = ${PORT}`);
-  } else { console.warn('⚠️ Arquivo config.toml não encontrado. Usando porta padrão 3000.'); }
+  } else { console.warn(`⚠️ Arquivo config.toml não encontrado. Usando porta padrão ${PORT}.`); }
 } catch (err) { console.error('❌ Erro ao ler config.toml:', err); }
 
 app.use('/api/users', userRoutes);

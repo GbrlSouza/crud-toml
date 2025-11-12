@@ -28,7 +28,7 @@ function writeUsers(users: any[]) {
 // GET - lista todos
 router.get('/', (req: Request, res: Response) => {
   const users = readUsers();
-  
+
   res.json(users);
 });
 
