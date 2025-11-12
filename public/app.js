@@ -1,43 +1,41 @@
+const API_URL = '/api/users';
+const table = document.getElementById('userTable');
 const form = document.getElementById('userForm');
-const list = document.getElementById('userList');
 
 async function loadUsers() {
-  const res = await fetch('/api/users');
+  const res = await fetch(API_URL);
   const users = await res.json();
-  
-  list.innerHTML = '';
+  table.innerHTML = '';
   users.forEach(u => {
-    const li = document.createElement('li');
-    
-    li.className = 'list-group-item d-flex justify-content-between align-items-center';
-    li.innerHTML = `
-      ${u.name} - ${u.email}
-      <button class="btn btn-sm btn-danger">Excluir</button>
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${u.id}</td>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">Excluir</button>
+      </td>
     `;
-    
-    li.querySelector('button').onclick = async () => {
-      await fetch('/api/users/' + u.id, { method: 'DELETE' });
-      loadUsers();
-    };
-    
-    list.appendChild(li);
+    table.appendChild(tr);
   });
 }
 
 form.onsubmit = async e => {
   e.preventDefault();
-  
   const name = document.getElementById('name').value;
   const email = document.getElementById('email').value;
-  
-  await fetch('/api/users', {
+  await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email })
   });
-  
   form.reset();
   loadUsers();
 };
+
+async function deleteUser(id) {
+  await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+  loadUsers();
+}
 
 loadUsers();

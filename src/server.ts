@@ -6,13 +6,18 @@ import path from 'path';
 import userRoutes from './routes/userRoutes.js';
 
 const app = express();
-
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(process.cwd(), 'public')));
 
-const configPath = path.join(__dirname, '..', 'config.toml');
+// Lê config TOON (TOML)
+const configPath = path.join(process.cwd(), 'config.toml');
 const configData = toml.parse(fs.readFileSync(configPath, 'utf-8'));
-const PORT = configData.server.port || 3000;
+const PORT = (configData as any).server.port || 3000;
 
+// Rotas
 app.use('/api/users', userRoutes);
-app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
+
+// Inicializa servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando em: http://localhost:${PORT}`);
+});

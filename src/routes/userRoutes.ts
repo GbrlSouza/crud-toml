@@ -3,34 +3,35 @@ import fs from 'fs';
 import path from 'path';
 
 const router = Router();
-const usersFile = path.join(__dirname, '../data/users.json');
+const dataDir = path.join(process.cwd(), 'data');
+const usersFile = path.join(dataDir, 'users.json');
 
+// Cria arquivo se não existir
 function ensureUsersFile() {
   if (!fs.existsSync(usersFile)) {
-    fs.mkdirSync(path.dirname(usersFile), { recursive: true });
+    fs.mkdirSync(dataDir, { recursive: true });
     fs.writeFileSync(usersFile, '[]', 'utf-8');
   }
 }
 
+// Lê usuários
 function readUsers() {
   ensureUsersFile();
-  try {
-    const data = fs.readFileSync(usersFile, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    fs.writeFileSync(usersFile, '[]', 'utf-8');
-    return [];
-  }
+  const data = fs.readFileSync(usersFile, 'utf-8');
+  return JSON.parse(data);
 }
 
+// Escreve usuários
 function writeUsers(users: any[]) {
   fs.writeFileSync(usersFile, JSON.stringify(users, null, 2), 'utf-8');
 }
 
-router.get('/', (req, res) => {
+// GET - Lista
+router.get('/', (_, res) => {
   res.json(readUsers());
 });
 
+// POST - Adiciona
 router.post('/', (req, res) => {
   const users = readUsers();
   const newUser = { id: Date.now(), ...req.body };
@@ -39,6 +40,7 @@ router.post('/', (req, res) => {
   res.json(newUser);
 });
 
+// DELETE - Remove
 router.delete('/:id', (req, res) => {
   let users = readUsers();
   users = users.filter((u: any) => u.id != req.params.id);
