@@ -12,30 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
+      - name: 📦 Checkout do código
         uses: actions/checkout@v4
 
-      - name: Configura Node.js
+      - name: ⚙️ Configura Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Instala dependências
+      - name: 📥 Instala dependências
         run: npm install
 
-      - name: Compila TypeScript
+      - name: 🧱 Compila TypeScript
         run: npm run build
-
-      - name: Testa build
-        run: node dist/server.js
 
       - name: Testa o servidor
         env:
-          PORT: ${{ env.PORT || 3000 }}
+          PORT: 3000
         run: |
           echo "Iniciando servidor na porta $PORT"
           npm run build
           node dist/server.js --port=$PORT &
-          sleep 3
-          echo "Testando conexão em http://localhost:$PORT/ping"
-          curl -I "http://localhost:$PORT/ping"
+          sleep 1
+
+          echo "⏳ Testando se o servidor responde em até 3 segundos..."
+          if timeout 3 bash -c "until curl -fs http://localhost:$PORT/ping; do sleep 0.5; done"; then
+            echo "✅ Servidor respondeu a tempo!"
+          else
+            echo "❌ Servidor não respondeu dentro do tempo limite!"
+            exit 1
+          fi
