@@ -30,8 +30,12 @@ jobs:
         run: node dist/server.js
 
       - name: Testa o servidor
+        env:
+          PORT: ${{ env.PORT || 3000 }}
         run: |
+          echo "Iniciando servidor na porta $PORT"
           npm run build
-          node dist/server.js &
+          node dist/server.js --port=$PORT &
           sleep 3
-          curl -I http://localhost:3000/ping
+          echo "Testando conexão em http://localhost:$PORT/ping"
+          curl -I "http://localhost:$PORT/ping"
