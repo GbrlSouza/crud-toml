@@ -28,3 +28,10 @@ jobs:
 
       - name: Testa build
         run: node dist/server.js
+
+      - name: Testa o servidor
+        run: |
+          npm run build
+          node dist/server.js &
+          sleep 3
+          curl -I http://localhost:3000/ping
