@@ -4,7 +4,7 @@ import path from 'path';
 import userRoutes from './routes/userRoutes';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
