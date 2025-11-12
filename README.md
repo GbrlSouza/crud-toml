@@ -1,29 +1,21 @@
 # crud-toml
 
 ```
-crud-toml/
+crud-toon/
 │
-├── src/
-│   │
-│   ├── server.ts
-│   │
-│   ├── routes/
-│   │   │
-│   │   └── userRoutes.ts
-│   │
-│   └── data/
-│       │
-│       └── users.json
-│
-├── public/
-│   │
-│   ├── index.html
-│   ├── app.js
-│   └── style.css
-│
-├── config.toml
 ├── package.json
 ├── tsconfig.json
-├── README.md
-└── vercel.json
+├── config.toml
+│
+├── src/
+│   ├── server.ts
+│   └── routes/
+│       └── userRoutes.ts
+│
+├── data/
+│   └── users.json
+│
+└── public/
+    ├── index.html
+    └── app.js
 ```
